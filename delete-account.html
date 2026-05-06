@@ -1,1 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suppression de compte — Vinarii</title>
+<style>
+  :root {
+    --wine: #6B1A2A;
+    --wine-deep: #3E0F18;
+    --gold: #C09A4A;
+    --cream: #F7F2EA;
+    --parchment: #EDE5D4;
+    --ink: #1C1410;
+    --ink-soft: #6B5A4E;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--wine-deep);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .logo-text {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--cream);
+    letter-spacing: .02em;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-left: 4px;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 48px auto;
+    padding: 0 24px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--parchment);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 2px 12px rgba(62,15,24,0.06);
+  }
+
+  .card-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #F5E8EC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: normal;
+    color: var(--wine);
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    font-family: Arial, sans-serif;
+  }
+
+  .warning-box {
+    background: #FFF8F0;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #7A4A10;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+  }
+
+  .warning-box strong { color: #5A3008; }
+
+  .field-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-family: Arial, sans-serif;
+  }
+
+  label span {
+    color: var(--wine);
+    margin-left: 2px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--parchment);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: var(--ink);
+    background: #fff;
+    transition: border-color .2s;
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--wine);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--wine);
+  }
+
+  .checkbox-group label {
+    font-size: 13px;
+    font-weight: normal;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--wine);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    transition: background .2s;
+    letter-spacing: .02em;
+  }
+
+  .btn:hover { background: var(--wine-deep); }
+  .btn:disabled { background: #ccc; cursor: not-allowed; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--parchment);
+    margin: 32px 0;
+  }
+
+  .alternative {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-family: Arial, sans-serif;
+    line-height: 1.8;
+  }
+
+  .alternative a {
+    color: var(--wine);
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .alternative a:hover { text-decoration: underline; }
+
+  /* Success state */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 32px 20px;
+  }
+
+  .success-msg .icon { font-size: 48px; margin-bottom: 16px; }
+
+  .success-msg h2 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--wine);
+    margin-bottom: 10px;
+  }
+
+  .success-msg p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-family: Arial, sans-serif;
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-family: Arial, sans-serif;
+  }
+
+  footer a { color: var(--wine); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .card { padding: 24px 20px; }
+    header { padding: 20px 24px; }
+    .container { margin: 24px auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo-text">Vinarii</span>
+  <div class="logo-dot"></div>
+</header>
+
+<div class="container">
+  <div class="card">
+
+    <!-- Formulaire -->
+    <div id="form-section">
+      <div class="card-icon">🗑️</div>
+      <h1>Demande de suppression de compte</h1>
+      <p class="subtitle">
+        Conformément au RGPD, vous avez le droit de demander la suppression de votre compte et de toutes vos données personnelles associées. Remplissez ce formulaire et nous traiterons votre demande dans un délai de 30 jours.
+      </p>
+
+      <div class="warning-box">
+        <strong>⚠️ Attention :</strong> La suppression de votre compte est <strong>irréversible</strong>. Toutes vos données seront définitivement supprimées : cave, dégustations, accords, historique et préférences. Cette action ne peut pas être annulée.
+      </div>
+
+      <form id="delete-form" onsubmit="handleSubmit(event)">
+
+        <div class="field-group">
+          <label for="email">Adresse e-mail associée au compte <span>*</span></label>
+          <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+        </div>
+
+        <div class="field-group">
+          <label for="reason">Raison de la suppression</label>
+          <select id="reason" name="reason">
+            <option value="">-- Sélectionnez une raison (optionnel) --</option>
+            <option value="privacy">Raisons de confidentialité</option>
+            <option value="not-useful">L'application ne me convient pas</option>
+            <option value="competitor">J'utilise une autre application</option>
+            <option value="temporary">Pause temporaire</option>
+            <option value="other">Autre raison</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="message">Message complémentaire</label>
+          <textarea id="message" name="message" placeholder="Informations complémentaires ou précisions sur votre demande..."></textarea>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="confirm" name="confirm" required>
+          <label for="confirm">
+            Je comprends que la suppression de mon compte est <strong>irréversible</strong> et que toutes mes données (cave, dégustations, préférences) seront définitivement effacées dans un délai de 30 jours.
+          </label>
+        </div>
+
+        <button type="submit" class="btn" id="submit-btn">
+          Envoyer ma demande de suppression
+        </button>
+
+      </form>
+
+      <hr class="divider">
+
+      <div class="alternative">
+        Vous préférez nous contacter directement ?<br>
+        Envoyez un e-mail à <a href="mailto:contact@vinarii.app?subject=Demande de suppression de compte">contact@vinarii.app</a><br>
+        avec l'objet <strong>"Demande de suppression de compte"</strong>.
+      </div>
+    </div>
+
+    <!-- Message de succès -->
+    <div class="success-msg" id="success-section">
+      <div class="icon">✅</div>
+      <h2>Demande envoyée</h2>
+      <p>
+        Votre demande de suppression a bien été reçue. Nous traiterons votre demande dans un délai maximum de <strong>30 jours</strong> et vous enverrons une confirmation à l'adresse e-mail indiquée.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <a href="index.html">Politique de confidentialité</a> · 
+  <a href="mailto:contact@vinarii.app">Contact</a> · 
+  © 2026 Vinarii
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+
+  const email = document.getElementById('email').value;
+  const reason = document.getElementById('reason').value;
+  const message = document.getElementById('message').value;
+  const btn = document.getElementById('submit-btn');
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+
+  // Construction du lien mailto
+  const subject = encodeURIComponent('Demande de suppression de compte Vinarii');
+  const body = encodeURIComponent(
+    `Demande de suppression de compte\n\n` +
+    `Email : ${email}\n` +
+    `Raison : ${reason || 'Non précisée'}\n` +
+    `Message : ${message || 'Aucun message complémentaire'}\n\n` +
+    `Cette demande a été soumise via le formulaire de suppression de compte Vinarii.`
+  );
+
+  window.location.href = `mailto:contact@vinarii.app?subject=${subject}&body=${body}`;
+
+  // Afficher le message de succès après 1 seconde
+  setTimeout(() => {
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-section').style.display = 'block';
+  }, 1000);
+}
+</script>
+
+</body>
+</html>
